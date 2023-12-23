@@ -1,0 +1,42 @@
+{{- /*
+
+    This is to make 'Hugo Live Preview' VScode extension work.
+
+    Please ensure that every page invokes the provided partial
+    as early as possible. Refer to your theme's documentation for details.
+
+    Your deployed site is not affected. The partial is only enabled
+    when HUGO_LIVE_PREVIEW_SCRIPT variable is set in the environment.
+
+    JSON listing of pages is embedded in website's home page. This data
+    helps matching a source file to the respective page.
+
+    A JavaScript is injected. It powers advanced features such as syncing
+    editor and preview scroll positions.
+
+*/ -}}
+{{- if os.Getenv "HUGO_LIVE_PREVIEW_SCRIPT" -}}
+<script>{{os.Getenv "HUGO_LIVE_PREVIEW_SCRIPT" | base64Decode | safeJS }}</script>
+{{- if eq .RelPermalink "/" -}}
+<script type="application/json">{"pageDirectory":[
+{{- range $i, $_ := .Sites -}}
+    {{ if ne $i 0 }},{{ end -}}
+    {"lang":{{ .Language.Lang -}}
+      ,"base":{{ .BaseURL -}}
+      ,"pages":[
+        {{- range $i, $_ := .AllPages -}}
+            {{ if ne $i 0 }},{{ end -}}
+            {"rel":{{ .RelPermalink -}}
+            {{ with .File}},"file":{{ .Filename }}{{ end -}}
+            {{ if ne (len .Aliases) 0}},"aliases":[
+                {{- range $i, $alias := .Aliases -}}
+                    {{ if ne $i 0 }},{{ end -}}
+                    {{ $alias }}
+                {{- end -}}]
+            {{- end -}}}
+        {{- end -}}
+    ]}
+{{- end -}}
+]}</script>
+{{- end -}}
+{{- end -}}

@@ -1,0 +1,141 @@
+{
+  "name": "hugo-live-preview",
+  "displayName": "hugo-live-preview",
+  "repository": "https://github.com/mejedi/vscode-hugo-live-preview",
+  "description": "Hugo preview panel for VSCode. Inspired by the convenience of built-in Markdown preview in VSCode.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onWebviewPanel:hugoLivePreview.preview"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hugoLivePreview.open",
+        "title": "Open Hugo Live Preview"
+      },
+      {
+        "command": "hugoLivePreview.navigateBack",
+        "title": "Go Back",
+        "icon": "$(arrow-left)"
+      },
+      {
+        "command": "hugoLivePreview.navigateForward",
+        "title": "Go Forward",
+        "icon": "$(arrow-right)"
+      },
+      {
+        "command": "hugoLivePreview.showSource",
+        "title": "Show Source",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "hugoLivePreview.openExternal",
+        "title": "Open Page in System Browser",
+        "icon": "$(link-external)"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "hugoLivePreview.hugoServer",
+        "properties": {
+          "embedderOrigin": {
+            "type": "string",
+            "description": "Origin of the iframe showing live preview."
+          }
+        }
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "hugoLivePreview.hugoServer",
+        "owner": "hugo",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "(?:Error|ERROR).*assemble:\\s*\"([^:\"]+):(\\d+):(\\d+)\":\\s*(.*)",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Change detected, rebuilding site",
+          "endsPattern": "Total in \\d+ ms"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "hugoLivePreview.navigateBack",
+          "group": "navigation@0",
+          "when": "activeWebviewPanelId == 'hugoLivePreview.preview' && hugoLivePreview.showingPreview"
+        },
+        {
+          "command": "hugoLivePreview.navigateForward",
+          "group": "navigation@1",
+          "when": "activeWebviewPanelId == 'hugoLivePreview.preview' && hugoLivePreview.showingPreview"
+        },
+        {
+          "command": "hugoLivePreview.showSource",
+          "group": "navigation@2",
+          "when": "activeWebviewPanelId == 'hugoLivePreview.preview' && hugoLivePreview.showingPreview"
+        },
+        {
+          "command": "hugoLivePreview.openExternal",
+          "when": "activeWebviewPanelId == 'hugoLivePreview.preview' && hugoLivePreview.showingPreview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "test-compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@tsconfig/svelte": "^5.0.2",
+    "@types/diff-match-patch": "^1.0.36",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.83.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "@vscode/test-electron": "^2.3.4",
+    "css-loader": "^6.8.1",
+    "diff-match-patch": "^1.0.5",
+    "errno": "^1.0.0",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "mocha": "^10.2.0",
+    "svelte": "^4.2.8",
+    "svelte-check": "^3.6.2",
+    "svelte-loader": "^3.1.9",
+    "svelte-preprocess": "^5.1.1",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.5.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.10.0"
+  }
+}
