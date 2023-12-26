@@ -56,7 +56,14 @@ if (document.readyState === 'loading') {
 function shouldHandleClick(e: Event): boolean {
     if (e.defaultPrevented) return false;
     for (let el = e.target as HTMLElement; el != e.currentTarget; el = el.parentNode as HTMLElement) {
-        if (el.nodeName == 'A' && el.hasAttribute('href')) return false;
+        if (el.nodeName == 'A' && el.hasAttribute('href')) {
+            if (el.getAttribute('target') === '_blank') {
+                // A link wants to open in new a window/tab, this will fail due to security settings.
+                e.preventDefault();
+                tellEmbedder<proto.NavigateToMsg>({ msg: proto.MsgType.NAVIGATE_TO, url: el.getAttribute('href') as string });
+            }
+            return false;
+        }
     }
     return true;
 }

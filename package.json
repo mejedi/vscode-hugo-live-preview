@@ -3,7 +3,7 @@
   "displayName": "hugo-live-preview",
   "repository": "https://github.com/mejedi/vscode-hugo-live-preview",
   "description": "Hugo preview panel for VSCode. Inspired by the convenience of built-in Markdown preview in VSCode.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.83.0"
   },
