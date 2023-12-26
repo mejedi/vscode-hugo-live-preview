@@ -118,7 +118,7 @@ class CustomBuildTaskTerminal implements vscode.Pseudoterminal {
 
 	open(initialDimensions: vscode.TerminalDimensions | undefined): void {
 
-        const hugoProc = spawn('hugo', ['server', '--buildDrafts'], {
+        const hugoProc = spawn('hugo', ['server', '--buildDrafts', ' --buildFuture'], {
             cwd: this.workspaceRoot.uri.fsPath,
             env:  { ...process.env, 'HUGO_LIVE_PREVIEW_SCRIPT': btoa(preparePayload(this.embedderOrigin)) },
             stdio: ['ignore', 'pipe', 'pipe'],
