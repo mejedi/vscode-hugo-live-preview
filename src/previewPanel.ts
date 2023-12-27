@@ -48,20 +48,19 @@ export class PreviewPanel {
 
         this.hugoServerManager = hugoServerManager;
 
-		// TODO: verify if we like options in usePanel
-		const extensionUri = context.extensionUri;
-		const panel = usePanel || vscode.window.createWebviewPanel(
-			'hugoLivePreview.preview',
-			'Hugo Live Preview',
-			vscode.ViewColumn.Two,
-			{enableScripts: true, retainContextWhenHidden: true, localResourceRoots: [
-				vscode.Uri.joinPath(extensionUri, 'dist'),
-			]},
-		);
+        const extensionUri = context.extensionUri;
+        const panel = usePanel || vscode.window.createWebviewPanel(
+            'hugoLivePreview.preview',
+            'Hugo Live Preview',
+            vscode.ViewColumn.Two,
+            { retainContextWhenHidden: true },
+        );
+        // The panel could've been reused, override options. OLD localResourceRoots might no longer work if extension has been updated.
+        panel.webview.options = { enableScripts: true, localResourceRoots: [ vscode.Uri.joinPath(extensionUri, 'dist') ]};
 
-		const embedderJs = vscode.Uri.joinPath(extensionUri, 'dist/embedder.js');
+        const embedderJs = vscode.Uri.joinPath(extensionUri, 'dist/embedder.js');
 
-		panel.webview.html =
+        panel.webview.html =
 `<!doctype html>
 <html lang=en><head>
 <meta charset=utf-8>
@@ -71,7 +70,7 @@ export class PreviewPanel {
 </body>
 </html>`;
 
-		panel.webview.onDidReceiveMessage(this.webviewOnMessage.bind(this));
+        panel.webview.onDidReceiveMessage(this.webviewOnMessage.bind(this));
         panel.onDidDispose(() => {
             this.state = previewPanelState.disposed();
             for (const disposable of this.disposables) disposable.dispose();
