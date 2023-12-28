@@ -68,7 +68,7 @@
 
     <div class="auxView {bannerShape(state) ? 'banner' : ''}">
 {#if state.type === PreviewPanelStateType.SERVER_STARTING }
-    <p>Starting sever...</p>
+    <p>Starting server...</p>
 {/if}
 
 {#if state.type === PreviewPanelStateType.SERVER_FAILED }
