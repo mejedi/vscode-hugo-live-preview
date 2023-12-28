@@ -80,7 +80,7 @@ export class HugoServer {
 
             // Note: if workspace is not trusted, tasks are not allowed to run.
             // However, currently we observe that executeTask doesn't fail right away,
-            // and the promise is succesfuly resolved. The task is put on hold and resumes
+            // and the promise is successfully resolved. The task is put on hold and resumes
             // once the trust is granted.
         });
     }

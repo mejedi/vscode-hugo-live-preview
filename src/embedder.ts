@@ -62,7 +62,7 @@ window.addEventListener('message', event=>{
 
             allowedContentOrigins = message.origins;
 
-            // Nuke iframes. Resets history which could contain invalid entries since server URL(s) migh have changed.
+            // Nuke iframes. Resets history which could contain invalid entries since server URL(s) might have changed.
             contentIframe = undefined;
             emergencyIframe = undefined;
             ui.contentIframe = undefined;
